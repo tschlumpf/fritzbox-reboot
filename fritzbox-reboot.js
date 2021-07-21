@@ -1,15 +1,6 @@
 /*jshint
 esversion: 8
 */
-/*
-The script checks if google.com is reachable and restarts the router if it is not.
-In addition, the script checks the uptime of the Fritzbox, if it is less than 10min, it is not restarted.
-
-With a cronjob the script is executed every 3min.
-
-The password of the Fritzbox is read from a file, if none is given.
-*/
-
 const debug = false;
 
 const connectionTester = require("connection-tester");
