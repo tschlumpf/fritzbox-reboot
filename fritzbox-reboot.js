@@ -11,7 +11,7 @@ const fs = require('fs');
 const fritzConfig = {
     user: "root",
     passwd: "",
-    passwdPath: "/home/simon/scripts/fritzboxPasswd",
+    passwdPath: "/home/simon/fritzboxPasswd",
     ipAdress: "192.168.178.1",
     minUptime: 600, // seconds
     tr064Port: 49000,
