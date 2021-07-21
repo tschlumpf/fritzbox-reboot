@@ -13,6 +13,6 @@ The password of the Fritzbox is read from a file, if none is given.
     */3 * * * * /usr/bin/node /home/xxx/fritzbox-reboot/fritzbox-reboot.js >> /path/to//logfile/firtzbox-reboot.log
 
 ## further informations
-https://avm.de/service/schnittstellen/
-https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/deviceinfoSCPD.pdf
-https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/deviceconfigSCPD.pdf
+* https://avm.de/service/schnittstellen/
+* https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/deviceinfoSCPD.pdf
+* https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/deviceconfigSCPD.pdf
