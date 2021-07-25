@@ -6,7 +6,7 @@ const debug = false;
 const connectionTester = require("connection-tester");
 const tr = require("tr-064");
 const tr064 = new tr.TR064();
-const fs = require('fs');
+const fs = require("fs");
 
 const fritzConfig = {
     user: "root",
@@ -143,5 +143,6 @@ function readFile(path, callback) {
 // write log to stdout
 function log(text) {
     "use strict";
-    console.log(new Date().toISOString() + "\t" + __filename + "\t" + text);
+    const timestamp = new Date().toISOString().replace(/-/g, "").replace(/:/g, "").replace("T", "-").split(".")[0];
+    console.log(timestamp + "..." + text);
 }
