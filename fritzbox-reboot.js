@@ -98,6 +98,7 @@ function reboot(passwd, callback) {
     });
 }
 
+// get FritzBox uptime
 async function getUptime(passwd, callback) {
     "use strict";
     tr064.initTR064Device(fritzConfig.ipAdress, fritzConfig.tr064Port, function (err, device) {
@@ -144,6 +145,6 @@ function readFile(path, callback) {
 // write log to stdout
 function log(text) {
     "use strict";
-    const timestamp = new Date().toISOString().replace(/-/g, "").replace(/:/g, "").replace("T", "-").split(".")[0];
+    const timestamp = new Date().toISOString().replaceAll("-", "").replace(":", "").replace("T", "-").split(".")[0];
     console.log(timestamp + "..." + text);
 }
