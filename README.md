@@ -6,6 +6,8 @@ In addition, the script checks the uptime of the Fritzbox, if it is less than 10
 The password of the Fritzbox is read from a file, if none is given.
 
 ## install
+Requires at least node.js version 15.
+
     npm install connection-tester
     npm install tr-064
 
