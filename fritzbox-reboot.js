@@ -3,6 +3,10 @@ esversion: 8
 */
 const debug = false;
 
+if (debug) {
+    log("debug active");
+}
+
 const homedir = require('os').homedir();
 const connectionTester = require("connection-tester");
 const tr = require(homedir + "/tr-064");
@@ -10,7 +14,7 @@ const tr064 = new tr.TR064();
 const fs = require("fs");
 
 const fritzConfig = {
-    user: "root",
+    user: "fritz8946",
     passwd: "",
     passwdPath: homedir + "/fritzboxPasswd",
     ipAdress: "192.168.178.1",
@@ -145,6 +149,6 @@ function readFile(path, callback) {
 // write log to stdout
 function log(text) {
     "use strict";
-    const timestamp = new Date().toISOString().replaceAll("-", "").replace(":", "").replace("T", "-").split(".")[0];
+    const timestamp = new Date().toISOString().replace(/-/g, "").replace(/:/g, "").replace("T", "-").split(".")[0];
     console.log(timestamp + "..." + text);
 }
