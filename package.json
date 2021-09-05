@@ -1,0 +1,6 @@
+{
+    "dependencies": {
+        "connection-tester": ">=0.2.1",
+        "tr-064": ">=0.2.0"
+    }
+}
