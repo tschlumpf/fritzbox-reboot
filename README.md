@@ -8,8 +8,7 @@ The password of the Fritzbox is read from a file, if none is given.
 ## install
 Requires at least node.js version 15.
 
-    npm install connection-tester
-    npm install tr-064
+    npm install 
 
 ## call
     */3 * * * * /usr/bin/node /home/xxx/fritzbox-reboot/fritzbox-reboot.js >> /path/to//logfile/firtzbox-reboot.log
