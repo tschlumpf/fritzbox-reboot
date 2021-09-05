@@ -7,11 +7,18 @@ if (debug) {
     log("debug active");
 }
 
+const fs = require("fs");
 const homedir = require('os').homedir();
 const connectionTester = require("connection-tester");
-const tr = require(homedir + "/tr-064");
-const tr064 = new tr.TR064();
-const fs = require("fs");
+try {
+    // use my own tr-064
+    var tr = require(homedir + "/tr-064");
+    var tr064 = new tr.TR064();
+} catch (e) {
+    // use tr-064 from npm
+    var tr = require("tr-064");
+    var tr064 = new tr.TR064();
+}
 
 const fritzConfig = {
     user: "fritz8946",
