@@ -11,7 +11,7 @@ Requires at least node.js version 15.
     npm install 
 
 ## call
-    */3 * * * * /usr/bin/node /home/xxx/fritzbox-reboot/fritzbox-reboot.js >> /path/to//logfile/firtzbox-reboot.log
+    */3 * * * * /usr/bin/node /home/xxx/fritzbox-reboot/fritzbox-reboot.js >> /path/to/logfile/firtzbox-reboot.log
 
 ## further informations
 * https://avm.de/service/schnittstellen/
