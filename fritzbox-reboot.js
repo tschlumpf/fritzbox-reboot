@@ -3,7 +3,7 @@ esversion: 8
 */
 "use strict";
 
-const debug = true;
+const debug = false;
 if (debug) {
   log("debug active");
 }
