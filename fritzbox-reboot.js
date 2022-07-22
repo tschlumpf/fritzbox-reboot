@@ -13,79 +13,77 @@ const net = require("net");
 const Fritzbox = require("@seydx/fritzbox");
 const homedir = require("os").homedir();
 
-const fritzConfig = {
-  user: "fritz8946",
-  passwd: "",
-  passwdPath: homedir + "/fritzboxPasswd",
-  ipAdress: "192.168.178.1",
-  minUptime: 600, // seconds
-  tr064Port: 49000,
-  tr064ServiceReboot: "urn:DeviceConfig-com:serviceId:DeviceConfig1",
-  tr064ServiceUptime: "urn:DeviceInfo-com:serviceId:DeviceInfo1",
+const config = {
+  fritzbox: {
+    user: "fritz8946",
+    passwd: "",
+    passwdPath: homedir + "/fritzboxPasswd", // File which contains the password.
+    ipAdress: "192.168.178.1",  // IP-Address of the fritzbox
+    minUptime: 600,             // seconds. Reboot only if uptime > minUptime.
+  },
+  testConnection: {
+    dontTest: false,            // If true the fritzbox will allways rebooted.
+    target: "www.google.com",   // hostname or IP-address
+    port: 443,
+    timeout: 3000,
+  },
 };
 
-const testConfig = {
-  dontTest: false, // If true the FB will allways rebooted.
-  target: "8.8.8.8",
-  port: 443,
-  timeout: 3000,
-};
+getPassword();
+if (!config.fritzbox.passwd) return;
 
-let fritzbox;
+const fritzbox = new Fritzbox({ username: config.fritzbox.user, password: config.fritzbox.passwd, });
 
-run();
-async function run() {
-  if (!fritzConfig.passwd) {
+if (config.testConnection.dontTest) {
+  reboot();
+  return;
+}
+
+testConnection(
+  config.testConnection.target,
+  config.testConnection.port,
+  config.testConnection.timeout,
+  (_, output) => {
+    if (!output.success) {
+      // no internet connection. reboot required
+      getUptime(uptime => {
+        log("uptime=" + uptime);
+        if (uptime === 0) {
+          log("uptime invalid. no reboot.");
+          return;
+        }
+        if (uptime > config.fritzbox.minUptime) {
+          reboot();
+          return;
+        }
+        log(`last reboot less then ${config.fritzbox.minUptime} seconds ago (${uptime} seconds)`);
+      });
+    } else {
+      if (debug) {
+        log("internet connection available");
+      }
+    }
+  }
+);
+
+
+function getPassword() {
+  if (!config.fritzbox.passwd) {
     // read password from file
-    if (!fritzConfig.passwdPath) {
+    if (!config.fritzbox.passwdPath) {
       log("path invalid");
       return;
     }
-    readFile(fritzConfig.passwdPath, (ret) => {
-      fritzConfig.passwd = ret;
+    readFile(config.fritzbox.passwdPath, (ret) => {
+      config.fritzbox.passwd = ret;
     });
   }
-  if (!fritzConfig.passwd) {
+  if (!config.fritzbox.passwd) {
     log("password invalid");
     return;
   }
-
-  fritzbox = new Fritzbox({ username: fritzConfig.user, password: fritzConfig.passwd, });
-
-  if (testConfig.dontTest) {
-    reboot();
-    return;
-  }
-
-  testConnection(
-    testConfig.target,
-    testConfig.port,
-    testConfig.timeout,
-    (err, output) => {
-      if (!output.success) {
-        // no internet connection. reboot required
-        getUptime(uptime => {
-          log("uptime=" + uptime);
-          if (uptime === 0) {
-            log("uptime invalid. no reboot.");
-            return;
-          }
-          if (uptime > fritzConfig.minUptime) {
-            reboot();
-            return;
-          }
-          log(`last reboot less then ${fritzConfig.minUptime} seconds ago (${uptime} seconds)`);
-        });
-      } else {
-        if (debug) {
-          log("internet connection available");
-        }
-      }
-    }
-  );
 }
 
-// reboot the FritzBox
 async function reboot() {
   try {
     log("Reboot started.");
@@ -93,20 +91,18 @@ async function reboot() {
     if (debug) return;
 
     await fritzbox.exec(
-      fritzConfig.tr064ServiceReboot,
+      "urn:DeviceConfig-com:serviceId:DeviceConfig1",
       "Reboot",
     );
-
   } catch (err) {
     console.error(err);
   }
 }
 
-// get FritzBox uptime
 async function getUptime(callback) {
   try {
     const info = await fritzbox.exec(
-      fritzConfig.tr064ServiceUptime,
+      "urn:DeviceInfo-com:serviceId:DeviceInfo1",
       "GetInfo",
     );
 
@@ -121,7 +117,6 @@ async function getUptime(callback) {
   }
 }
 
-// read file
 function readFile(path, callback) {
   let output;
 
@@ -134,7 +129,6 @@ function readFile(path, callback) {
   callback(output);
 }
 
-// write log to stdout
 function log(text) {
   const timestamp = new Date().toISOString().replace(/-/g, "").replace(/:/g, "").replace("T", "-").split(".")[0];
   console.log(timestamp + "..." + text);

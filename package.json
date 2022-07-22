@@ -1,5 +1,5 @@
 {
-    "dependencies": {
-        "@seydx/fritzbox": "^2.3.1"
-    }
+  "dependencies": {
+    "@seydx/fritzbox": "^2.3.1"
+  }
 }
